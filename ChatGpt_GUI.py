@@ -83,10 +83,14 @@ def create_completion(messages: list):
         'stop': '',
         'clientId': os.urandom(6).hex()
     }
-
-    response = requests.post('https://chatgptlogin.ac/wp-json/ai-chatbot/v1/chat', 
+    try:
+        response = requests.post('https://chatgptlogin.ac/wp-json/ai-chatbot/v1/chat', 
                              headers=headers, json=json_data)
-    return response.json()['reply']
+        print(response.text)
+        return response.json()['reply']
+    except:
+        return "请求异常，请重新点击提交。或者清理历史数据重新提问。"
+
 
 #运行指定功能
 class MyRunnable(QRunnable):
@@ -216,11 +220,11 @@ class MyWidget(QWidget):
         self.submit_button.setEnabled(False)
         self.threadpool.start(runnable)
 
-        self.output_text.append(f'<p><span style="color: #FFA500;">【我】:</span><br>{input_value}</p><br>')
+        self.output_text.append(f'<div><span style="color: #FFA500;">【我】:</span><br>{input_value}</div><br>')
         self.input_text.clear()
 
     def handle_result(self, result):
-        self.output_text.insertHtml(f'<p><span style="color: #00FF00;">【ChatGpt】:</span>{result}</p>')
+        self.output_text.insertHtml(f'<div><span style="color: #00FF00;">【ChatGpt】:</span>{result}</div>')
 
     def handle_clear(self):
         self.output_text.clear()
