@@ -11,5 +11,5 @@ pip install pyinstaller
 pyinstaller -wF ChatGpt_GUI.py
 ```
 
-![输入图片说明](gpt.png)
+![输入图片说明](igpt.png)
 
