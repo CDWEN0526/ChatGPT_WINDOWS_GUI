@@ -26,6 +26,7 @@ def create_completion(messages: list):
 
     data = json.dumps(data)
     r = requests.post(url=url,data=data,headers=header)
+    print(r.text,r.status_code)
     return r.text
 
 #运行指定功能
@@ -158,12 +159,13 @@ class MyWidget(QWidget):
         runnable = MyRunnable(input_value, self.handle_result, self.submit_button)
         self.submit_button.setEnabled(False)
         self.threadpool.start(runnable)
-
-        self.output_text.append(f'<div><span style="color: #FFA500;">【我】:</span><br>{input_value}</div><br>')
+        self.output_text.append(f'<div><span style="color: #FFA500;">【我】:</span></div>')
+        self.output_text.append(f'{input_value}')
         self.input_text.clear()
 
     def handle_result(self, result):
-        self.output_text.insertHtml(f'<div><span style="color: #00FF00;">【ChatGpt】:</span>{result}</div>')
+        self.output_text.append(f'<div><span style="color: #00FF00;">【ChatGpt】:</span></div>')
+        self.output_text.append(f'{result}')
 
     def handle_clear(self):
         self.output_text.clear()
